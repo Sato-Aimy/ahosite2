@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カーソル追従・無限拡大画像</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #000;
+            overflow: hidden;
+            position: relative;
+        }
+        .image {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            animation: scaleUp 10s linear infinite;
+        }
+        @keyframes scaleUp {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(50);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        document.addEventListener("click", function(event) {
+            let img = document.createElement("img");
+            img.src = "image/Subject.png";
+            img.className = "image";
+            img.style.top = event.clientY + "px";
+            img.style.left = event.clientX + "px";
+            img.style.zIndex = Date.now(); // 時間を利用して前面に出す
+            document.body.appendChild(img);
+            
+            // 画像が一定時間後に削除されるようにする
+            setTimeout(() => {
+                img.remove();
+            }, 10000);
+        });
+    </script>
+</body>
+</html>
